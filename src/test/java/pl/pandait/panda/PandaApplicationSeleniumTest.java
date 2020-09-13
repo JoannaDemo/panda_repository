@@ -1,11 +1,20 @@
 package pl.pandait.panda;
-
-import org.junit.jupiter.api.*;
+import java.net.URL;
+import java.net.MalformedURLException;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import static org.junit.Assert.assertEquals;
 
 @SpringBootTest(classes = {PandaApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class PandaApplicationSeleniumTest {
@@ -30,13 +39,18 @@ public class PandaApplicationSeleniumTest {
     }
 
     @Test
-    public void checkIfApplicationRunCorrectly(){
+    public void greetings_shouldOpenMainPageThenReturnWelcomeText() {
         System.out.println("Uruchamiam test 1: Sprawdzenie napisu na stronie głównej");
-        WebElement greetingString = driver.findElement(By.xpath("//p"));
-        String napis = greetingString.getText().trim();
-        assertEquals("Get your greeting here", napis);
+        WebElement greetingElement = driver.findElement(By.xpath("//p"));
+        String greetingText = greetingElement.getText().trim();
+        assertEquals("Get your greeting here", greetingText);
+    }
 
-        WebElement linkToGreetings = greetingString.findElement(By.xpath("./a"));
+    @Test
+    public void greetings_shouldOpenSubpageThenReturnGreetingsText() {
+        System.out.println("Uruchamiam test 2: Sprawdzenie napisu na podstronie");
+        WebElement greetingElement = driver.findElement(By.xpath("//p"));
+        WebElement linkToGreetings = greetingElement.findElement(By.xpath("./a"));
         linkToGreetings.click();
 
         WebElement helloWorldString = driver.findElement(By.xpath("//p"));
@@ -44,8 +58,9 @@ public class PandaApplicationSeleniumTest {
         assertEquals("Hello, World!", newPageString);
     }
 
-    @AfterAll
-    public static void after(){
+
+    @AfterEach
+    public void after() {
         driver.quit();
     }
 }
