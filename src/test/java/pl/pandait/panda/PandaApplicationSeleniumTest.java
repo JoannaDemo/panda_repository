@@ -39,18 +39,13 @@ public class PandaApplicationSeleniumTest {
     }
 
     @Test
-    public void greetings_shouldOpenMainPageThenReturnWelcomeText() {
+    public void checkIfApplicationRunCorrectly(){
         System.out.println("Uruchamiam test 1: Sprawdzenie napisu na stronie głównej");
-        WebElement greetingElement = driver.findElement(By.xpath("//p"));
-        String greetingText = greetingElement.getText().trim();
-        assertEquals("Get your greeting here", greetingText);
-    }
+        WebElement greetingString = driver.findElement(By.xpath("//p"));
+        String napis = greetingString.getText().trim();
+        assertEquals("Get your greeting here", napis);
 
-    @Test
-    public void greetings_shouldOpenSubpageThenReturnGreetingsText() {
-        System.out.println("Uruchamiam test 2: Sprawdzenie napisu na podstronie");
-        WebElement greetingElement = driver.findElement(By.xpath("//p"));
-        WebElement linkToGreetings = greetingElement.findElement(By.xpath("./a"));
+        WebElement linkToGreetings = greetingString.findElement(By.xpath("./a"));
         linkToGreetings.click();
 
         WebElement helloWorldString = driver.findElement(By.xpath("//p"));
@@ -58,9 +53,8 @@ public class PandaApplicationSeleniumTest {
         assertEquals("Hello, World!", newPageString);
     }
 
-
-    @AfterEach
-    public void after() {
+    @AfterAll
+    public static void after(){
         driver.quit();
     }
 }
