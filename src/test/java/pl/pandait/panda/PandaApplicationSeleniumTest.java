@@ -1,5 +1,4 @@
 package pl.pandait.panda;
-
 import java.net.URL;
 import java.net.MalformedURLException;
 import org.openqa.selenium.remote.DesiredCapabilities;
