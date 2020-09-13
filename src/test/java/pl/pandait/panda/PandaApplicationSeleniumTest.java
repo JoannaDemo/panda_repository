@@ -34,7 +34,7 @@ public class PandaApplicationSeleniumTest {
         // Tworzymy nową instancję Firefoxa
         FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--headless");
-        driver = new FirefoxDriver(options);
+        driver = new FirefoxDriver(capabilities);
 
         // Pamiętaj, że aplikacja Spring musi działać! To znaczy też musi być włączona.
         driver.get(String.format("http://192.168.44.44:%d/", port));
