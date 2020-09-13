@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -26,12 +27,12 @@ public class PandaApplicationSeleniumTest {
     @BeforeEach
     public void startup() throws InterruptedException, MalformedURLException {
         
-        FirefoxOptions capabilities = new FirefoxOptions();
-        capabilities.setCapability("marionette", true);
-        driver = new RemoteWebDriver(new URL("http://localhost/wd/hub"), capabilities);
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        capabilities.setPlatform(Platform.LINUX);
+        driver = new RemoteWebDriver(new URL("http://192.168.44.44:4444/wd/hub"), capabilities);
         // Pamiętaj, że aplikacja Spring musi działać! To znaczy też musi być włączona.
         
-        driver.get(String.format("http://10.0.2.15:%d/", port));
+        driver.get(String.format("http://192.168.44.44:%d/", port));
 
         //Czekamy 2 sekundy
         Thread.sleep(2000);
@@ -60,6 +61,6 @@ public class PandaApplicationSeleniumTest {
 
     @AfterEach
     public void after() {
-        driver.close();
+        driver.quit();
     }
 }
