@@ -1,6 +1,8 @@
 package pl.pandait.panda;
-
-
+import java.net.URL;
+import java.net.MalformedURLException;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,33 +13,25 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-
 import static org.junit.Assert.assertEquals;
-
 
 @SpringBootTest(classes = {PandaApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class PandaApplicationSeleniumTest {
-
+    
     private static WebDriver driver;
-
+    
     @LocalServerPort
     private int port;
-
+    
     @BeforeEach
-    public void startup() throws InterruptedException {
-
-        //Driver znajduje się w resource
-        System.setProperty("webdriver.gecko.driver", "src/main/resources/geckodriver");
-        //Ścieżka do Firefoxa - jeżeli nie działa trzeba sprawdzić, gdzie FF jest zainstalowany!
-        System.setProperty("webdriver.firefox.bin", "/usr/lib/firefox/firefox");
-
-        // Tworzymy nową instancję Firefoxa
-        FirefoxOptions options = new FirefoxOptions();
-        options.addArguments("--headless");
-        driver = new FirefoxDriver(options);
-
+    public void startup() throws InterruptedException, MalformedURLException {
+        
+        FirefoxOptions capabilities = new FirefoxOptions();
+        capabilities.setCapability("marionette", true);
+        driver = new RemoteWebDriver(new URL("http://localhost/wd/hub"), capabilities);
         // Pamiętaj, że aplikacja Spring musi działać! To znaczy też musi być włączona.
-        driver.get(String.format("http://192.168.44.44:%d/", port));
+        
+        driver.get(String.format("http://10.0.2.15:%d/", port));
 
         //Czekamy 2 sekundy
         Thread.sleep(2000);
